@@ -2,6 +2,7 @@ var express = require('express')
 var app = express()
 var Comments = require('./models/comments')
 var Videos = require('./models/videos')
+var Users = require('./models/users')
 var bodyParser = require('body-parser')
 
 app.use(bodyParser.json());
@@ -32,6 +33,7 @@ app.get('/api/v1/comments/:id', function(request,response){
 app.post('/api/v1/comments', function(request,response){
     var comment = new Comments({
         video_id: request.body.video_id,
+        user_comment: request.body.user_comment
     });
 
     comment.save().then(function(){
@@ -55,6 +57,29 @@ app.get('/api/v1/videos/:id', function(request,response){
       .fetch({ require:true })
       .then(function(video){
         response.json(video);
+    },function(){
+        response.json({
+          error: 'video cannot be found.'
+        });
+    });
+});
+
+
+
+//Get All Users
+app.get('/api/v1/users', function(request,response){
+    Users.fetchAll().then(function(users){
+        response.json(users);
+    })
+});
+
+//Get One Specific User
+app.get('/api/v1/users/:id', function(request,response){
+    Users
+      .where('id', request.params.id)
+      .fetch({ require:true })
+      .then(function(users){
+        response.json(users);
     },function(){
         response.json({
           error: 'video cannot be found.'
