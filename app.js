@@ -24,7 +24,7 @@ app.get('/api/v1/comments/:id', function(request,response){
         response.json(comment);
     },function(){
         response.json({
-          error: 'video cannot be found.'
+          error: 'comment cannot be found.'
         });
     });
 });
@@ -38,6 +38,16 @@ app.post('/api/v1/comments', function(request,response){
 
     comment.save().then(function(){
         response.json(comment);
+    });
+});
+
+//Delete
+app.delete('/api/v1/comments/:id', function(request,response){
+    Comments.remove({ id: request.params.id
+    },function(){
+        response.json({
+          error: 'comment cannot be found.'
+        });
     });
 });
 
@@ -64,6 +74,27 @@ app.get('/api/v1/videos/:id', function(request,response){
     });
 });
 
+//Post
+app.post('/api/v1/videos', function(request,response){
+    var videos = new Videos({
+        videoURL: request.body.videoURL
+    });
+    videos.save().then(function(){
+        response.json(videos);
+    });
+});
+
+//Delete
+app.delete('/api/v1/videos/:id', function(request,response){
+    Videos.remove({ id: request.params.id
+    },function(){
+        response.json({
+          error: 'video cannot be found.'
+        });
+    });
+});
+
+
 
 
 //Get All Users
@@ -83,6 +114,27 @@ app.get('/api/v1/users/:id', function(request,response){
     },function(){
         response.json({
           error: 'video cannot be found.'
+        });
+    });
+});
+
+//Post
+app.post('/api/v1/User', function(request,response){
+    var user = new User({
+        email: request.body.email,
+        password: request.body.password
+    });
+    user.save().then(function(){
+        response.json(user);
+    });
+});
+
+//Delete
+app.delete('/api/v1/users/:id', function(request,response){
+    Users.remove({ id: request.params.id
+    },function(){
+        response.json({
+          error: 'Users cannot be found.'
         });
     });
 });
